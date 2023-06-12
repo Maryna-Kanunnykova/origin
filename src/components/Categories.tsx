@@ -1,17 +1,27 @@
-const Categories = ({ categoryId, setCategoryId }) => {
-  const onClicCategor = (i) => {
+import React from "react";
+
+type CategoriesProps = {
+  categoryId: number;
+  setCategoryId: (i: number) => void;
+};
+
+const arrCategories = [
+  "Все",
+  "Мясные",
+  "Вегетарианская",
+  "Гриль",
+  "Острые",
+  "Закрытые",
+];
+
+const Categories: React.FC<CategoriesProps> = ({
+  categoryId,
+  setCategoryId,
+}) => {
+  const onClicCategor = (i: number) => {
     if (categoryId === i) return;
     setCategoryId(i);
   };
-
-  const arrCategories = [
-    "Все",
-    "Мясные",
-    "Вегетарианская",
-    "Гриль",
-    "Острые",
-    "Закрытые",
-  ];
 
   const categoriesList = () => {
     return arrCategories.map((item, i) => (

@@ -1,16 +1,31 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { addItems } from "../redux/slices/cartSlice";
-import { minusItem, removeItems } from "../redux/slices/cartSlice";
 
-const CartItem = ({ id, title, type, imageUrl, count, price, size }) => {
+import { minusItem, removeItems, addItems } from "../redux/cart/slice";
+
+type CartItemProp = {
+  id: string;
+  title: string;
+  type: string;
+  imageUrl: string;
+  count: number;
+  price: number;
+  size: number;
+};
+
+const CartItem: React.FC<CartItemProp> = ({
+  id,
+  title,
+  type,
+  imageUrl,
+  count,
+  price,
+  size,
+}) => {
   const dispatch = useDispatch();
+
   const onClickPlus = () => {
-    dispatch(
-      addItems({
-        id,
-      })
-    );
+    dispatch(addItems({ id } as CartItemProp));
   };
   const onClickMinus = () => {
     dispatch(minusItem(id));
@@ -32,9 +47,12 @@ const CartItem = ({ id, title, type, imageUrl, count, price, size }) => {
         </p>
       </div>
       <div className="cart__item-count">
-        <div
+        <button
+          disabled={count === 0}
           onClick={onClickMinus}
-          className="button button--outline button--circle cart__item-count-minus"
+          className={
+            "button button--outline button--circle cart__item-count-minus"
+          }
         >
           <svg
             width="10"
@@ -52,9 +70,9 @@ const CartItem = ({ id, title, type, imageUrl, count, price, size }) => {
               fill="#EB5A1E"
             ></path>
           </svg>
-        </div>
+        </button>
         <b>{count}</b>
-        <div
+        <button
           onClick={onClickPlus}
           className="button button--outline button--circle cart__item-count-plus"
         >
@@ -74,7 +92,7 @@ const CartItem = ({ id, title, type, imageUrl, count, price, size }) => {
               fill="#EB5A1E"
             ></path>
           </svg>
-        </div>
+        </button>
       </div>
       <div className="cart__item-price">
         <b>{price * count} ₴</b>

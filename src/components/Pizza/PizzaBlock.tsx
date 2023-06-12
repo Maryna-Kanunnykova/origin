@@ -1,35 +1,55 @@
+import React from "react";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { addItems } from "../../redux/slices/cartSlice";
+import { addItems } from "../../redux/cart/slice";
+import { CartItemType } from "../../redux/cart/types";
+import { RootState } from "../../redux/store";
 
-const PizzaBlock = ({ id, title, price, sizes, imageUrl, types }) => {
+type PizzaBlockProp = {
+  id: string;
+  title: string;
+  types: number[];
+  imageUrl: string;
+  price: number;
+  sizes: number[];
+};
+
+const typeNames = ["тонкое", "традиционное"];
+
+const PizzaBlock: React.FC<PizzaBlockProp> = ({
+  id,
+  title,
+  price,
+  sizes,
+  imageUrl,
+  types,
+}) => {
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
 
-  const cartItem = useSelector((state) => {
+  const dispatch = useDispatch();
+
+  const cartItem = useSelector((state: RootState) => {
     return state.cart.items.find((obj) => {
       return obj.id === id;
     });
   });
 
-  const addedCount = cartItem ? cartItem.count : 0;
-
-  const dispatch = useDispatch();
-
-  const typeNames = ["тонкое", "традиционное"];
-
   const onClickAdd = () => {
-    const item = {
+    const item: CartItemType = {
       id,
       title,
       price,
       imageUrl,
       type: typeNames[activeType],
       size: sizes[activeSize],
+      count: 0,
     };
     dispatch(addItems(item));
   };
+
+  const addedCount = cartItem ? cartItem.count : 0;
 
   return (
     <div className="pizza-block-wrapper">

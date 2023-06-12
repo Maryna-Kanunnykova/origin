@@ -1,16 +1,18 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { clearItems } from "../redux/slices/cartSlice";
+import { clearItems } from "../redux/cart/slice";
 import CartItem from "../components/CartItem";
 import CartEmpty from "./CartEmpty";
+import { RootState } from "../redux/store";
 
-const Cart = () => {
+const Cart: React.FC = () => {
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.cart.items);
-  const totalPrice = useSelector((state) => state.cart.totalPrice);
+  const items = useSelector((state: RootState) => state.cart.items);
+  const totalPrice = useSelector((state: RootState) => state.cart.totalPrice);
 
-  if (!totalPrice) {
+  if (totalPrice === 0) {
     return <CartEmpty />;
   }
 
